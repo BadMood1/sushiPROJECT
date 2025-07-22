@@ -17,6 +17,7 @@ import { checkEmptyCart } from "./toggleCartStatus.js";
 import { calcCartPriceAndDelivery } from "./calcCartPrice.js";
 
 checkEmptyCart();
+calcCartPriceAndDelivery();
 
 // Обработчик для кнопки "в корзину"
 document.addEventListener("click", function (event) {

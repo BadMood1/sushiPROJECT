@@ -95,7 +95,7 @@ document.addEventListener("click", function (event) {
             saveToLocalStorage();
         }
     } else {
-        // Обрабатываем увеличение счетчика
+        // Обрабатываем увеличение счётчика
 
         // МЕНЮ
         if (counter.closest(".col-md-6") && countValue > 0) {
