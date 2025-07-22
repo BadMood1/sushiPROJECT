@@ -6,7 +6,6 @@ const cartWrapper = document.querySelector(".cart-wrapper");
 export let cartItems = [];
 
 if (localStorage.getItem("cartItems")) {
-    console.log("GOT ITEMS");
     // Используем тот же массив, так как иначе ломаются некоторые процессы
     cartItems = JSON.parse(localStorage.getItem("cartItems"));
 
@@ -24,6 +23,8 @@ document.addEventListener("click", function (event) {
     if (!event.target.hasAttribute("data-cart")) return;
 
     const card = event.target.closest(".card"); // Карта товара(ролла)
+    // Пропишем отдельно, так как используется и в объекте, и при сбросе значений
+    const cardFixedPrice = card.querySelector(".price__currency").dataset.fixedPrice + " ₽";
 
     // Получаем из карты данные, формируем объект для товара
     const productInfo = {
@@ -32,18 +33,27 @@ document.addEventListener("click", function (event) {
         title: card.querySelector(".item-title").innerText,
         itemsInBox: card.querySelector("[data-items-in-box]").innerText,
         weight: card.querySelector(".price__weight").innerText,
-        price: card.querySelector(".price__currency").innerText,
+        price: cardFixedPrice,
         counter: card.querySelector("[data-counter]").innerText,
     };
 
     // Если нет товара в корзине, то сразу пушим в массив данные(копии не будет)
     if (!addToCart(productInfo)) cartItems.push(productInfo); // JSON внутри функции
 
+    // Сброс значений
     card.querySelector("[data-counter]").innerText = 1; // Сброс счетчика
+    card.querySelector(".price__currency").innerText = cardFixedPrice;
 
     checkEmptyCart();
     saveToLocalStorage();
 });
+
+document.querySelector("form").onsubmit = function () {
+    alert("Заказ принят! Ожидайте звонка.");
+    // Очищаем корзину
+    cartItems = [];
+    localStorage.removeItem("cartItems");
+};
 
 // function addToCart(info) {
 //     // Сначала проверяем если есть товар в корзине
@@ -124,7 +134,6 @@ function addToCart(info) {
         // Ищем объект в cartItems. Для этого возьмём id - возьмём info.id(айди везде одинаковый)
         const foundObjectToChange = cartItems.find((item) => item.id === info.id);
         foundObjectToChange.counter = String(countValue);
-        console.log(foundObjectToChange);
         calcCartPriceAndDelivery();
 
         return true; // Нам не нужно создавать новый элемент, обновили уже существующий
@@ -163,5 +172,4 @@ function addToCart(info) {
 
 export function saveToLocalStorage() {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    console.log("saved!");
 }

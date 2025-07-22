@@ -66,6 +66,13 @@ document.addEventListener("click", function (event) {
         // МЕНЮ
         if (counter.closest(".col-md-6") && countValue > 1) {
             counter.textContent = --countValue;
+
+            // Меняем цену соответственно счетчику
+            const detailsWrapper = counter.closest(".details-wrapper");
+            const price = detailsWrapper.querySelector(".price__currency");
+            const multiplier = parseInt(counter.textContent);
+
+            price.textContent = `${multiplier * price.dataset.fixedPrice} ₽`;
         }
 
         // КОРЗИНА
@@ -100,6 +107,13 @@ document.addEventListener("click", function (event) {
         // МЕНЮ
         if (counter.closest(".col-md-6") && countValue > 0) {
             counter.textContent = ++countValue;
+
+            // Меняем цену соответственно счетчику
+            const detailsWrapper = counter.closest(".details-wrapper");
+            const price = detailsWrapper.querySelector(".price__currency");
+            const multiplier = parseInt(counter.textContent);
+
+            price.textContent = `${multiplier * price.dataset.fixedPrice} ₽`;
         }
 
         // КОРЗИНА
